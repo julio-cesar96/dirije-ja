@@ -1,8 +1,186 @@
+/* Reset e base */
 * {
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
 }
 
 body {
-  font-family: sans-serif;
-  background-color: #f5f5f5;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+/* Layout principal */
+.app {
+  min-height: 100vh;
+}
+
+.main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+/* Header */
+.header {
+  background-color: #2D0A4E;
+  color: white;
+  padding: 1.5rem 2rem;
+  text-align: center;
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.logo-icone {
+  font-size: 2rem;
+}
+
+.logo-nome {
+  font-size: 2rem;
+  color: #F5C800;
+}
+
+.header-tagline {
+  color: #ccc;
+  margin-bottom: 0.75rem;
+}
+
+.header-disponiveis {
+  font-size: 0.9rem;
+  color: #F5C800;
+}
+
+/* Seção de instrutores */
+.secao-titulo {
+  font-size: 1.5rem;
+  color: #2D0A4E;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 3px solid #F5C800;
+}
+
+/* Grid de cards */
+.lista-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Card do instrutor */
+.card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.card-foto {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #F5C800;
+  align-self: center;
+}
+
+.card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.card-nome {
+  font-size: 1.2rem;
+  color: #2D0A4E;
+}
+
+.card-cidade {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.card-especialidade {
+  color: #555;
+  font-size: 0.9rem;
+  font-style: italic;
+}
+
+.card-preco {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #2D0A4E;
+  margin-top: 0.5rem;
+}
+
+.card-preco span {
+  font-size: 0.85rem;
+  font-weight: normal;
+  color: #888;
+}
+
+/* Badge de disponibilidade */
+.badge {
+  display: inline-block;
+  padding: 0.3rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  align-self: flex-start;
+}
+
+.badge-disponivel {
+  background-color: #e6f4ea;
+  color: #1e7e34;
+}
+
+/* Botão */
+.btn-agendar {
+  margin-top: 0.75rem;
+  background-color: #2D0A4E;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.6rem 1.2rem;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-agendar:hover {
+  background-color: #4a1280;
+}
+
+/* Lista vazia */
+.lista-vazia {
+  text-align: center;
+  padding: 3rem;
+  color: #888;
+}
+
+.lista-vazia p:first-child {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Contador de resultados */
+.contador {
+  color: #666;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
 }

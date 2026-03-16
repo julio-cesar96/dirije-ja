@@ -1,62 +1,28 @@
-// JSX 
+import { Header } from "./components/Header"
+import { ListaInstrutores } from "./components/ListaInstrutores" 
+import { instrutores } from "./data/instrutores"
 
-import Button from "./Button"
-import Card from "./Card"
-import ListaDeInstrutores from "./ListaDeInstrutores";
+
+// Componente principal da aplicação
+// Orquestra os dados e faz a ligação entre os componentes
 
 function App() {
 
-  const handleAgendarAula = () => {
-    alert("Agendei uma aula");
-  }
-
-  const handleCancelarAula = () => {
-    alert("Cancelei uma aula");
-  }
+  // Calculo dos instrutores disponveis.
+   // filter() retorna um novo array só com os que passam na condição
+  const instrutoresDisponiveis = instrutores.filter(instrutor => instrutor.disponivel)
 
   return (
-    <>
-      <Card 
-        nome="João Silva"
-        disponivel={true}
-        categoria="B"
-        especialidade="Direção Defensiva"
-      >
-        <button>Agendar Aula</button>
-      </Card>
+    <div className="app">
+      <Header totalDisponiveis={instrutores.length} />
 
-      <Card 
-        nome="Stella"
-        disponivel={false}
-        categoria="AB"
-        especialidade="Baliza"
-      >
-        <button>Agendar Aula</button>
-      </Card>
+      <main className="main">
+        <h2 className="secao-titulo">Instrutores</h2>
 
-      <Card 
-        nome="Maria"
-        disponivel={true}
-        categoria="A"
-        especialidade="Transito"
-      >
-        <button>Agendar Aula</button>
-      </Card>
-
-      <Button 
-        label="Agendar Aula"
-        onClick={handleAgendarAula}
-      />
-
-      <Button 
-        label="Cancelar Aula"
-        onClick={handleCancelarAula}
-      />
-
-      <ListaDeInstrutores />
-
-    </>
+        <ListaInstrutores instrutores={instrutoresDisponiveis} />
+      </main>
+    </div>
   )
 }
 
-export default App
+export default App;

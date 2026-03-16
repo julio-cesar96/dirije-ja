@@ -1,0 +1,50 @@
+// Dados mockados para os instrutores
+// Na A6, você pode substituir isso por uma chamada real à API para obter os instrutores.
+
+export const instrutores = [
+  {
+    id: 1,
+    nome: 'Ana Carvalho',
+    cidade: 'São Paulo',
+    especialidade: 'Direção defensiva',
+    preco: 120,
+    disponivel: true,
+    foto: 'https://i.pravatar.cc/150?img=1',
+  },
+  {
+    id: 2,
+    nome: 'Carlos Mendes',
+    cidade: 'Rio de Janeiro',
+    especialidade: 'Primeira habilitação',
+    preco: 90,
+    disponivel: false,
+    foto: 'https://i.pravatar.cc/150?img=3',
+  },
+  {
+    id: 3,
+    nome: 'Fernanda Lima',
+    cidade: 'Belo Horizonte',
+    especialidade: 'Reciclagem CNH',
+    preco: 100,
+    disponivel: true,
+    foto: 'https://i.pravatar.cc/150?img=5',
+  },
+  {
+    id: 4,
+    nome: 'Roberto Alves',
+    cidade: 'São Paulo',
+    especialidade: 'Direção defensiva',
+    preco: 150,
+    disponivel: true,
+    foto: 'https://i.pravatar.cc/150?img=7',
+  },
+  {
+    id: 5,
+    nome: 'Mariana Costa',
+    cidade: 'Curitiba',
+    especialidade: 'Primeira habilitação',
+    preco: 80,
+    disponivel: false,
+    foto: 'https://i.pravatar.cc/150?img=9',
+  },
+]
