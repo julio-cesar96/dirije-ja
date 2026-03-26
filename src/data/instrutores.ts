@@ -1,14 +1,18 @@
 // Dados mockados para os instrutores
 // Na A6, você pode substituir isso por uma chamada real à API para obter os instrutores.
 
-export const instrutores = [
+import type { Instrutor } from "../types";
+
+
+
+export const instrutores: Instrutor[] = [
   {
     id: 1,
     nome: 'Ana Carvalho',
     cidade: 'São Paulo',
     especialidade: 'Direção defensiva',
+    disponibilidade: true,
     preco: 120,
-    disponivel: true,
     foto: 'https://i.pravatar.cc/150?img=1',
   },
   {
@@ -17,7 +21,7 @@ export const instrutores = [
     cidade: 'Rio de Janeiro',
     especialidade: 'Primeira habilitação',
     preco: 90,
-    disponivel: false,
+    disponibilidade: false,
     foto: 'https://i.pravatar.cc/150?img=3',
   },
   {
@@ -26,7 +30,7 @@ export const instrutores = [
     cidade: 'Belo Horizonte',
     especialidade: 'Reciclagem CNH',
     preco: 100,
-    disponivel: true,
+    disponibilidade: true,
     foto: 'https://i.pravatar.cc/150?img=5',
   },
   {
@@ -35,7 +39,7 @@ export const instrutores = [
     cidade: 'São Paulo',
     especialidade: 'Direção defensiva',
     preco: 150,
-    disponivel: true,
+    disponibilidade: true,
     foto: 'https://i.pravatar.cc/150?img=7',
   },
   {
@@ -44,7 +48,7 @@ export const instrutores = [
     cidade: 'Curitiba',
     especialidade: 'Primeira habilitação',
     preco: 80,
-    disponivel: false,
+    disponibilidade: false,
     foto: 'https://i.pravatar.cc/150?img=9',
   },
   {
@@ -53,7 +57,7 @@ export const instrutores = [
     cidade: 'Curitiba',
     especialidade: 'Direção defensiva',
     preco: 75,
-    disponivel: true,
+    disponibilidade: true,
     foto: 'https://i.pravatar.cc/150?img=9',
   },
   {
@@ -62,7 +66,7 @@ export const instrutores = [
     cidade: 'Bahia',
     especialidade: 'Treinamento para habilitados',
     preco: 90,
-    disponivel: true,
+    disponibilidade: true,
     foto: 'https://i.pravatar.cc/150?img=9',
   },
   {
@@ -71,7 +75,7 @@ export const instrutores = [
     cidade: 'Manaus',
     especialidade: 'Primeira habilitação',
     preco: 80,
-    disponivel: true,
+    disponibilidade: true,
     foto: 'https://i.pravatar.cc/150?img=9',
   },
 ]

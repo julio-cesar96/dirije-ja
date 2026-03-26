@@ -1,8 +1,10 @@
 import { Header } from "./components/Header"
-import { ListaInstrutores } from "./components/ListaInstrutores" 
 import { instrutores as dadosMockados } from "./data/instrutores"
 import { BarraFiltros } from "./components/BarraFiltro"
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
+import type { Instrutor } from "./types"
+import Lista from "./components/Lista"
+import { CardInstrutor } from "./components/CardInstrutor"
 
 // Componente principal da aplicação
 // Orquestra os dados e faz a ligação entre os componentes
@@ -10,32 +12,41 @@ import { useEffect, useState } from "react"
 function App() {
 
   // Estado para os instrutores filtrados, inicialmente com todos os instrutores
-  const [instrutores, setInstrutores] = useState([]); // lista vazia
-  const [instrutoresFiltrados, setInstrutoresFiltrados] = useState([]);
-  const [loading, setLoading] = useState(true); // começa carregando
-  const [erro, setErro] = useState(null); // sem erro inicialmente
+  const [instrutores, setInstrutores] = useState<Instrutor[]>([]); // lista vazia
+  const [loading, setLoading] = useState<boolean>(false); // começa carregando
+  const [erro, setErro] = useState<null | string>(null); // sem erro inicialmente
+  const [busca, setBusca] = useState<string>(""); // estado para o termo de busca
+  const [cidade, setCidade] = useState<string>(""); // estado para a cidade selecionada
 
 
   // [] - rodar toda vez que o App montar
 
   useEffect(() => {
-    setLoading(true); // inicia o carregamento
-    setErro(null); // limpa erros anteriores 
-    
     const timer = setTimeout(() => {
-      // Simulo uma request de 1.5 segundos
       try {
+        setLoading(true); // inicia o carregamento
         setInstrutores(dadosMockados); // carrega os dados mockados
-        setInstrutoresFiltrados(dadosMockados); // inicialmente, todos os instrutores estão filtrados
         setLoading(false); // terminou o carregamento
       } catch (error) {
-        setErro("Erro ao carregar os instrutores."); // define a mensagem de erro
+        setErro(`Erro ao carregar os instrutores. ${error}`); // define a mensagem de erro
         setLoading(false); // terminou o carregamento, mesmo com erro
       }
     }, 1500);
 
     return () => clearTimeout(timer); // limpa o timer se o componente desmontar antes de completar
   }, []);
+
+  const instrutoresFiltrados = useMemo<Instrutor[]>(() => {
+    return instrutores.filter(instrutor => {
+      const buscaOk = busca === "" || instrutor.nome.toLowerCase().includes(busca.toLowerCase());
+      const cidadeOk = cidade === "" || instrutor.cidade.toLowerCase() === cidade.toLowerCase();
+      return buscaOk && cidadeOk;
+    })
+  }, [instrutores, busca, cidade]);
+
+  const totalDisponiveis = useMemo<number>(() => {
+    return instrutores.filter(instrutor => instrutor.disponibilidade).length;
+  }, [instrutores]);
 
   if (loading) {
     return (
@@ -58,15 +69,31 @@ function App() {
 
   return (
     <div className="app">
-      <Header totalDisponiveis={dadosMockados.length} />
+      <Header totalDisponiveis={totalDisponiveis} />
 
       <main className="main">
         <BarraFiltros 
           instrutores={dadosMockados}
-          onFiltrar={setInstrutoresFiltrados}
+          busca={busca}
+          cidade={cidade}
+          onBuscaChange={setBusca}
+          onCidadeChange={setCidade}
         />
-
-        <ListaInstrutores instrutores={instrutoresFiltrados} />
+        
+        <p className="contador">
+          {instrutoresFiltrados.length === 0
+            ? "Nenhum instrutor encontrado."
+            : `${instrutoresFiltrados.length} instrutor${instrutoresFiltrados.length > 1 ? "es" : ""} encontrado${instrutoresFiltrados.length > 1 ? "s" : ""}.`
+          }
+        </p>
+        
+        <Lista<Instrutor> 
+          itens={instrutoresFiltrados}
+          keyExtractor={(i) => i.id.toString()}
+          renderItem={(i) => <CardInstrutor instrutor={i} />}
+          mensagem="Nenhum instrutor encontrado para esse filtro"
+        />
+        
       </main>
     </div>
   )

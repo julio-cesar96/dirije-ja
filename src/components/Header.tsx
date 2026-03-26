@@ -1,8 +1,7 @@
 // Recebe o total de instrutores disponíveis e exibe no header
 
-import { instrutores } from "../data/instrutores"
 
-export const Header = ({ totalDisponiveis }) => {
+export const Header = ({ totalDisponiveis }: { totalDisponiveis: number }) => {
     return (
         <header className="header">
             <div className="header-logo">
@@ -17,7 +16,7 @@ export const Header = ({ totalDisponiveis }) => {
             {totalDisponiveis > 0
                 ? (
                     <p className="header-disponiveis">
-                       🟢 {totalDisponiveis}  instrutor{instrutores.length !== 1 ? 'es' : ''} encontrado{instrutores.length !== 1 ? 's' : ''}.
+                       🟢 {totalDisponiveis}  instrutor{totalDisponiveis !== 1 ? 'es' : ''} encontrado{totalDisponiveis !== 1 ? 's' : ''}.
                     </p>
                 )
                 : (

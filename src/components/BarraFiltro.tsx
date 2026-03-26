@@ -1,45 +1,26 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
+import type { BarraFiltrosProps } from "../types";
 
-export const BarraFiltros = ({ instrutores, onFiltrar}) => {
 
-    //Estado para o campo de busca por nome
-    const [busca, setBusca] = useState("");
 
-    //Estado para filtrar as cidades
-    const [cidade, setCidade] = useState("");
+export const BarraFiltros = ({ busca, cidade, instrutores, onBuscaChange, onCidadeChange, onLimpar }: BarraFiltrosProps) => {
+
 
     // Cria uma ref pro input de busca
-    const inputBuscaRef = useRef(null);
+    const inputBuscaRef = useRef<HTMLInputElement | null>(null);
+
 
     // focar no inut quando o componente monta
     useEffect(() => {
-        if (inputBuscaRef.current) {
-            inputBuscaRef.current.focus();
-        }
-    }, [])
+        inputBuscaRef.current?.focus();
+    }, []);
 
-    const renderCount = useRef(0);
-    renderCount.current += 1;
-    console.log(`BarraFiltros renderizou ${renderCount.current} vezes`)
-
-    function handleBuscaChange(event) {
-        const novaBusca = event.target.value;
-        setBusca(novaBusca);
-
-        const instrutoresFiltrados = instrutores.filter(instrutor => 
-            instrutor.nome.toLowerCase().includes(novaBusca.toLowerCase()) && (cidade === "" || instrutor.cidade === cidade)
-        )
-        onFiltrar(instrutoresFiltrados);
+    function handleBuscaChange(e: React.ChangeEvent<HTMLInputElement>) {
+        onBuscaChange(e.target.value);
     }
 
-    function handleCidadeChange(event) {
-        const novaCidade = event.target.value;
-        setCidade(novaCidade);
-
-        const instrutoresFiltrados = instrutores.filter(instrutor => 
-            instrutor.nome.toLowerCase().includes(busca.toLowerCase()) && (novaCidade === "" || instrutor.cidade === novaCidade)
-        )
-        onFiltrar(instrutoresFiltrados);
+    function handleCidadeChange(e: React.ChangeEvent<HTMLSelectElement>) {
+        onCidadeChange(e.target.value);
     }
 
     // Extrai as cidades únicas dos instrutores para popular o dropdown
@@ -61,7 +42,7 @@ export const BarraFiltros = ({ instrutores, onFiltrar}) => {
             </div>
 
             <div className="campo">
-                <label htmlFor="filtro-cidade">Filtrar por cidade</label>
+                <label htmlFor="filtro-cidade">Cidade</label>
                 <select
                     id="filtro-cidade"
                     value={cidade}
@@ -76,9 +57,11 @@ export const BarraFiltros = ({ instrutores, onFiltrar}) => {
                 </select>
             </div>
 
-            <p style={{ fontSize: '12px', color: '#999' }}>
-                Renders: {renderCount.current}
-            </p>
+            {onLimpar && (
+                <button onClick={onLimpar} className="btn-limpar">
+                    Limpar filtros
+                </button>
+            )}
         </div>
     )
 }

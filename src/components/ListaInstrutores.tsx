@@ -1,9 +1,13 @@
 // ListaInstrutor - recebe o array de instrutores e renderiza um card para cada um.
 // Exibe uma mensagem quando a lista estiver vazia.
 
+
+import type { ListaInstrutoresProps } from "../types"
 import { CardInstrutor } from "./CardInstrutor"
 
-export const ListaInstrutores = ({ instrutores }) => {
+
+
+export const ListaInstrutores = ({ instrutores }: ListaInstrutoresProps) => {
     if (instrutores.length === 0) {
         return (
             <div className="lista-vazia">
@@ -23,12 +27,7 @@ export const ListaInstrutores = ({ instrutores }) => {
                 {instrutores.map(instrutor => (
                     <CardInstrutor
                         key={instrutor.id}
-                        nome={instrutor.nome}
-                        cidade={instrutor.cidade}
-                        especialidade={instrutor.especialidade}
-                        preco={instrutor.preco}
-                        disponivel={instrutor.disponivel}
-                        foto={instrutor.foto}
+                        instrutor={instrutor}
                     />
                 ))}
             </div>

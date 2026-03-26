@@ -1,7 +1,11 @@
 // CardInstrutor - mostra as infos de um instrutor.
 // Recebe os dados via props e renderiza um card com as informações do instrutor.
 
-export const CardInstrutor = ({ nome, cidade, especialidade, preco, disponivel, foto }) => {
+import type { CardInstrutorProps } from "../types";
+
+
+export const CardInstrutor = ({ instrutor }: CardInstrutorProps) => {
+    const { foto, nome, cidade, especialidade, preco, disponibilidade } = instrutor;
     return (
         <div className="card">
             {/* Exibe a foto do instrutor */}
@@ -21,7 +25,7 @@ export const CardInstrutor = ({ nome, cidade, especialidade, preco, disponivel, 
                     💰 R$ {preco}<span>/hora</span>
                 </p>
 
-                {disponivel && (
+                {disponibilidade && (
                     <span className="badge badge-disponivel">
                         ✅ Disponível hoje 
                     </span>
