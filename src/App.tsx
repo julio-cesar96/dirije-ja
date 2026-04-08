@@ -1,10 +1,10 @@
-import { Header } from "./components/Header"
+import { Header } from "./components/ui/Header"
 import { instrutores as dadosMockados } from "./data/instrutores"
-import { BarraFiltros } from "./components/BarraFiltro"
 import { useEffect, useMemo, useState } from "react"
 import type { Instrutor } from "./types"
-import Lista from "./components/Lista"
-import { CardInstrutor } from "./components/CardInstrutor"
+import Lista from "./components/ui/Lista"
+import { CardInstrutor } from "./components/features/CardInstrutor"
+import { BarraFiltros } from "./components/features/BarraFiltro"
 
 // Componente principal da aplicação
 // Orquestra os dados e faz a ligação entre os componentes

@@ -3,7 +3,7 @@
 
 
 import type { ListaInstrutoresProps } from "../types"
-import { CardInstrutor } from "./CardInstrutor"
+import { CardInstrutor } from "./features/CardInstrutor"
 
 
 

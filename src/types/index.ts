@@ -38,6 +38,7 @@ export interface HeaderProps {
 
 export interface CardInstrutorProps {
     instrutor: Instrutor;
+    onVerPerfil?: (id: string | number) => void;
 }
 
 
