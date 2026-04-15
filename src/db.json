@@ -1,0 +1,24 @@
+{
+  "instrutores": [
+    {
+      "id": "1",
+      "nome": "Ana Silva",
+      "cidade": "Rio de Janeiro",
+      "especialidade": "Direção Defensiva",
+      "preco": 120,
+      "disponivel": true,
+      "foto": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=400"
+    },
+    {
+      "id": "2",
+      "nome": "Carlos Lima",
+      "cidade": "São Paulo",
+      "especialidade": "Treino para Recém Habilitados",
+      "preco": 150,
+      "disponivel": false,
+      "foto": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=400"
+    }
+  ],
+  "agendamentos": [],
+  "favoritos": []
+}

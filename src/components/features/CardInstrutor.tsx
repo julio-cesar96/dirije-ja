@@ -1,6 +1,7 @@
 import { cva, type VariantProps } from 'class-variance-authority'
 import type { Instrutor } from '../../types'
 import Badge from '../ui/Badges'
+import { Link } from 'react-router-dom';
 
 const cardVariants = cva(
   [
@@ -26,7 +27,7 @@ interface CardInstrutorProps extends VariantProps<typeof cardVariants> {
   onVerPerfil?: (id: string) => void
 }
 
-function CardInstrutor({ instrutor, variant, onVerPerfil }: CardInstrutorProps) {
+function CardInstrutor({ instrutor, variant }: CardInstrutorProps) {
   const { id, nome, cidade, especialidade, preco, disponibilidade, foto } = instrutor
   const variantFinal = variant ?? (disponibilidade ? "disponivel" : "padrao")
 
@@ -59,7 +60,8 @@ function CardInstrutor({ instrutor, variant, onVerPerfil }: CardInstrutorProps) 
         : <Badge variant="ocupado">🔴 Indisponível</Badge>
       }
 
-      <button
+      <Link
+       to={`/instrutores/${id}`}
         className="
           mt-auto bg-brand-purple text-white
           font-semibold py-2 px-4 rounded-xl
@@ -67,10 +69,10 @@ function CardInstrutor({ instrutor, variant, onVerPerfil }: CardInstrutorProps) 
           focus:outline-none focus:ring-2 focus:ring-brand-yellow focus:ring-offset-2
         "
         aria-label={`Ver perfil de ${nome}`}
-        onClick={() => onVerPerfil?.(String(id))}
       >
         Ver perfil
-      </button>
+      </Link>
+
 
     </article>
   )
