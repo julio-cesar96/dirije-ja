@@ -3,14 +3,14 @@ import { cva, type VariantProps } from 'class-variance-authority'
 // ── Variantes do Badge ────────────────────────────────────────────────
 const badgeVariants = cva(
   // Classes base — presentes em todas as variantes
-  "inline-flex items-center gap-1 text-xs font-semibold px-3 py-1 rounded-full",
+  "inline-flex items-center justify-center text-[10px] font-bold px-2 py-1 rounded tracking-wider uppercase",
   {
     variants: {
       variant: {
-        disponivel: "bg-green-100 text-green-700",
-        ocupado:    "bg-gray-100 text-gray-600",
-        destaque:   "bg-yellow-100 text-yellow-700",
-        novo:       "bg-purple-100 text-purple-700",
+        disponivel: "bg-gray-500 text-white",
+        ocupado:    "bg-gray-200 text-gray-500",
+        destaque:   "bg-gray-800 text-white",
+        novo:       "bg-gray-100 text-gray-800",
       },
     },
     defaultVariants: {

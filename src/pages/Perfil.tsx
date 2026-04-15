@@ -1,26 +1,56 @@
 import { useParams, Link, useNavigate } from "react-router-dom";
-import { instrutores } from "../data/instrutores";
+import { useQuery } from "@tanstack/react-query";
+import { buscarInstrutor } from "../services/api";
 import Badge from "../components/ui/Badges";
+import type { Instrutor } from "../types";
 
 function Perfil() {
-  const { id } = useParams<{
-    id: string;
-  }>();
+  const { id } = useParams<{id: string;}>();
+
+  const {
+    data: instrutor,
+    isLoading,
+    isError
+  } = useQuery<Instrutor>({
+    queryKey: ["instrutor", id], // chave única para cada instrutor: rebusca quando o ID muda
+    queryFn: () => buscarInstrutor(id!), // função de busca, recebe o ID
+    enabled: !!id, // só roda a query se o ID existir
+    retry: false, // não tenta refazer a query em caso de erro (ex: ID inválido)
+  });
+
+
   const navigate = useNavigate();
 
-  if (!id) {
+
+  if (isLoading) {
     return (
-      <div className="error">
-        <h1>Erro: ID do instrutor não fornecido.</h1>
-        <p>
-          Por favor, volte para a lista de instrutores e selecione um perfil
-          válido.
-        </p>
+      <div className="flex flex-col items-center justify-center min-h-[50vh] gap-4">
+        <p className="text-6xl animate-pulse">⏳</p>
+        <h1 className="text-2xl font-bold text-gray-600">Carregando perfil...</h1>
       </div>
     );
   }
-
-  const instrutor = instrutores.find((i) => i.id === id);
+  
+  if (isError || !instrutor) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[50vh] gap-4">
+        <p className="text-6xl">⚠️</p>
+        <h1 className="text-2xl font-bold text-red-600">Erro ao carregar perfil</h1>
+        <p className="text-gray-500">{isError ? "Erro ao carregar perfil" : "Instrutor não encontrado"}</p>
+        <Link
+          to="/"
+          className="
+            bg-brand-purple text-white font-semibold
+            py-2 px-6 rounded-xl
+            hover:bg-purple-800 transition-colors
+            focus:outline-none focus:ring-2 focus:ring-brand-yellow focus:ring-offset-2
+          "
+        >
+          Voltar para a listagem
+        </Link>
+      </div>
+    );
+  }
 
   if (!instrutor) {
     return (
