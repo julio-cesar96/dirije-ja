@@ -17,6 +17,7 @@ function Listagem() {
   } = useQuery<Instrutor[]>({
     queryKey: ["instrutores"],
     queryFn: buscarInstrutores,
+    throwOnError: true, // para que o error seja capturado pelo ErrorBoundary
   });
 
   const intrutoresFiltrados = useMemo(() => {

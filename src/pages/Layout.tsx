@@ -1,5 +1,7 @@
 import { Outlet } from "react-router-dom";
 import { Header } from "../components/ui/Header";
+import ErroFallback from "../components/ui/ErroFallback";
+import { ErrorBoundary } from "react-error-boundary";
 
 /* 
     Layout define a estrutura visual comum a todas as paginas (header, footer e etc)
@@ -25,11 +27,17 @@ function Layout() {
                 <Header totalDisponiveis={3} />
                 
                 <main className="flex-1 max-w-6xl mx-auto w-full px-8 py-8">
-                    <Outlet />
+                    {/*
+                        ErrorBoundary é um componente que captura erros em seus filhos e exibe um fallback (componente de erro) ao invés de quebrar toda a aplicação.
+                        Aqui, se qualquer componente renderizado dentro do <Outlet /> lançar um erro, o ErroFallback será exibido, evitando que a aplicação quebre completamente.
+                    */}
+                    <ErrorBoundary FallbackComponent={ErroFallback}> 
+                        <Outlet />
+                    </ErrorBoundary>
                 </main>
 
                 <footer className="bg-purple-200 text-white text-center py-4 mt-auto text-sm">
-                    <p>© 2024 DiretoFácil — Todos os direitos reservados</p>
+                    <p>© 2026 DiretoFácil — Todos os direitos reservados</p>
                 </footer>
             </div>
         </>
