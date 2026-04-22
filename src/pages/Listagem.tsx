@@ -4,6 +4,7 @@ import { buscarInstrutores } from "../services/api";
 import type { Instrutor } from "../types";
 import { BarraFiltros } from "../components/features/BarraFiltro";
 import CardInstrutor from "../components/features/CardInstrutor";
+import Skeleton from "../components/ui/Skeleton";
 
 function Listagem() {
   const [busca, setBusca] = useState("");
@@ -31,10 +32,24 @@ function Listagem() {
 
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center min-h-[50vh]">
-        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600" aria-label="Carregando instrutores"></div>
-        <p className="ml-4 text-gray-600 font-medium">Carregando instrutores...</p>
+     <section>
+      <h1 className="text-2xl font-bold text-brand-purple mb-6">
+        Encontre seu instrutor
+      </h1>
+      {/*
+        aria-label="Carregando instrutores" no grid:
+        leitores de tela anunciam o loading sem ver os skeletons
+      */}
+      <div
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+        aria-label="Carregando instrutores..."
+        aria-busy="true"
+      >
+        {Array.from({ length: 6 }).map((_, i) => (
+          <Skeleton key={i} />
+        ))}
       </div>
+    </section>
     )
   }
 
