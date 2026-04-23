@@ -36,8 +36,8 @@ function Layout() {
                     </ErrorBoundary>
                 </main>
 
-                <footer className="bg-purple-200 text-white text-center py-4 mt-auto text-sm">
-                    <p>© 2026 DiretoFácil — Todos os direitos reservados</p>
+                <footer className="bg-white border-t border-gray-200 text-gray-500 text-center py-6 mt-auto text-sm">
+                    <p>© 2026 DirejeJá — Todos os direitos reservados</p>
                 </footer>
             </div>
         </>

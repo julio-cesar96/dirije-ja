@@ -2,6 +2,7 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { buscarInstrutor } from "../services/api";
 import Badge from "../components/ui/Badges";
+import Breadcrumb from "../components/ui/Breadcrumb";
 import type { Instrutor } from "../types";
 
 function Perfil() {
@@ -40,10 +41,10 @@ function Perfil() {
         <Link
           to="/"
           className="
-            bg-brand-purple text-white font-semibold
+            bg-brand-primary text-white font-semibold
             py-2 px-6 rounded-xl
-            hover:bg-purple-800 transition-colors
-            focus:outline-none focus:ring-2 focus:ring-brand-yellow focus:ring-offset-2
+            hover:bg-brand-primary-hover transition-colors
+            focus:outline-none focus:ring-2 focus:ring-brand-secondary focus:ring-offset-2
           "
         >
           Voltar para a listagem
@@ -56,7 +57,7 @@ function Perfil() {
     return (
       <div className="flex flex-col items-center justify-center min-h-[50vh] gap-4">
         <p className="text-6xl">😕</p>
-        <h1 className="text-2xl font-bold text-brand-purple">
+        <h1 className="text-2xl font-bold text-brand-primary">
           Instrutor não encontrado
         </h1>
         <p className="text-gray-500">
@@ -72,10 +73,10 @@ function Perfil() {
         <Link
           to="/"
           className="
-            bg-brand-purple text-white font-semibold
+            bg-brand-primary text-white font-semibold
             py-2 px-6 rounded-xl
-            hover:bg-purple-800 transition-colors
-            focus:outline-none focus:ring-2 focus:ring-brand-yellow focus:ring-offset-2
+            hover:bg-brand-primary-hover transition-colors
+            focus:outline-none focus:ring-2 focus:ring-brand-secondary focus:ring-offset-2
           "
         >
           Voltar para a listagem
@@ -84,38 +85,18 @@ function Perfil() {
     );
   }
 
-  const { nome, cidade, especialidade, preco, disponibilidade, foto } = instrutor;
+  const { nome, cidade, especialidade, preco, disponivel, foto } = instrutor;
 
   return (
     <>
       <article>
-        {/* Breadcrumb — mostra o caminho de navegação */}
-        <nav aria-label="Navegação estrutural" className="mb-6">
-          <ol className="flex items-center gap-2 text-sm text-gray-500">
-            <li>
-              <Link
-                to="/"
-                className="hover:text-brand-purple transition-colors"
-              >
-                Home
-              </Link>
-            </li>
-            <li aria-hidden="true">/</li>
-            <li>
-              <Link
-                to="/"
-                className="hover:text-brand-purple transition-colors"
-              >
-                Instrutores
-              </Link>
-            </li>
-            <li aria-hidden="true">/</li>
-            {/* Página atual — não é link, tem aria-current */}
-            <li className="text-brand-purple font-medium" aria-current="page">
-              {nome}
-            </li>
-          </ol>
-        </nav>
+        <Breadcrumb
+          items={[
+            { label: "Home", to: "/" },
+            { label: "Instrutores", to: "/" },
+            { label: nome },
+          ]}
+        />
 
         {/* Perfil */}
         <div className="bg-white rounded-2xl p-8 shadow-md border border-gray-100">
@@ -123,18 +104,18 @@ function Perfil() {
             <img
               src={foto}
               alt={`Foto de perfil de ${nome}`}
-              className="w-32 h-32 rounded-full object-cover border-4 border-brand-yellow"
+              className="w-32 h-32 rounded-full object-cover border-4 border-brand-secondary"
             />
 
             <div className="flex flex-col gap-3">
-              <h1 className="text-3xl font-bold text-brand-purple">{nome}</h1>
+              <h1 className="text-3xl font-bold text-brand-primary">{nome}</h1>
               <p className="text-gray-600">📍 {cidade}</p>
               <p className="text-gray-600 italic">{especialidade}</p>
-              <p className="text-2xl font-bold text-brand-purple">
+              <p className="text-2xl font-bold text-brand-primary">
                 R$ {preco.toFixed(2)}
                 <span className="text-sm font-normal text-gray-400">/hora</span>
               </p>
-              {disponibilidade ? (
+              {disponivel ? (
                 <Badge variant="disponivel">✅ Disponível hoje</Badge>
               ) : (
                 <Badge variant="ocupado">🔴 Indisponível</Badge>
@@ -151,21 +132,21 @@ function Perfil() {
           */}
             <button
               onClick={() => navigate(`/agendar/${instrutor.id}`)}
-              disabled={!disponibilidade}
+              disabled={!disponivel}
               className="
-              bg-brand-purple text-white font-semibold
-              py-3 px-8 rounded-xl
-              hover:bg-purple-800 transition-colors duration-200
-              disabled:opacity-50 disabled:cursor-not-allowed
-              focus:outline-none focus:ring-2 focus:ring-brand-yellow focus:ring-offset-2
+              bg-brand-primary text-white font-semibold flex justify-center items-center gap-2
+              py-3.5 px-8 rounded-xl shadow-sm
+              hover:bg-brand-primary-hover hover:shadow-md transition-all duration-200 active:scale-[0.98]
+              disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100 disabled:hover:shadow-sm
+              focus:outline-none focus:ring-2 focus:ring-brand-primary focus:ring-offset-2
             "
               aria-label={
-                disponibilidade
+                disponivel
                   ? `Agendar aula com ${nome}`
                   : `${nome} está indisponível para agendamento`
               }
             >
-              {disponibilidade ? "Agendar aula" : "Indisponível"}
+              {disponivel ? "Agendar aula" : "Indisponível"}
             </button>
 
             {/*
@@ -175,11 +156,11 @@ function Perfil() {
             <button
               onClick={() => navigate(-1)}
               className="
-              border-2 border-gray-200 text-gray-600 font-semibold
-              py-3 px-8 rounded-xl
-              hover:border-brand-purple hover:text-brand-purple
-              transition-all duration-200
-              focus:outline-none focus:ring-2 focus:ring-brand-purple focus:ring-offset-2
+              border-2 border-gray-200 bg-white text-gray-500 font-semibold
+              py-3.5 px-8 rounded-xl
+              hover:border-gray-300 hover:text-brand-neutral hover:bg-gray-50
+              transition-all duration-200 active:scale-[0.98]
+              focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2
             "
             >
               Voltar

@@ -27,8 +27,8 @@ interface CardInstrutorProps extends VariantProps<typeof cardVariants> {
 }
 
 function CardInstrutor({ instrutor, variant }: CardInstrutorProps) {
-  const { id, nome, cidade, especialidade, preco, disponibilidade, foto } = instrutor
-  const variantFinal = variant ?? (disponibilidade ? "disponivel" : "padrao")
+  const { id, nome, cidade, especialidade, preco, disponivel, foto } = instrutor
+  const variantFinal = variant ?? (disponivel ? "disponivel" : "padrao")
 
   return (
     <article className={cardVariants({ variant: variantFinal })}>
@@ -40,7 +40,7 @@ function CardInstrutor({ instrutor, variant }: CardInstrutorProps) {
           className="w-full h-full object-cover"
         />
         <button 
-          className="absolute top-3 right-3 bg-gray-900/40 hover:bg-gray-900/60 p-2 rounded-full text-white transition-colors"
+          className="absolute top-3 right-3 bg-brand-primary/40 hover:bg-brand-primary/60 p-2 rounded-full text-white transition-colors"
           aria-label="Favoritar"
         >
           <svg xmlns="http://www.w3.org/Infinity" fill="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
@@ -54,16 +54,16 @@ function CardInstrutor({ instrutor, variant }: CardInstrutorProps) {
         <div className="flex flex-col md:flex-row md:justify-between items-start gap-4">
           <div>
             <div className="flex items-center gap-3 mb-1">
-              <h3 className="text-[22px] font-semibold text-gray-900 tracking-tight">{nome}</h3>
-              <Badge variant={disponibilidade ? "disponivel" : "ocupado"}>
-                {disponibilidade ? 'DISPONÍVEL' : 'INDISPONÍVEL'}
+              <h3 className="text-[22px] font-semibold text-brand-neutral tracking-tight">{nome}</h3>
+              <Badge variant={disponivel ? "disponivel" : "ocupado"}>
+                {disponivel ? 'DISPONÍVEL' : 'INDISPONÍVEL'}
               </Badge>
             </div>
             <p className="text-sm text-gray-500 font-medium">{cidade}</p>
           </div>
 
           <div className="text-left md:text-right mt-1 md:mt-0">
-            <p className="text-2xl font-bold text-gray-900 tracking-tight">
+            <p className="text-2xl font-bold text-brand-neutral tracking-tight">
               R$ {preco.toFixed(2)}<span className="text-sm font-medium text-gray-500 ml-1">/hora</span>
             </p>
           </div>
@@ -73,19 +73,19 @@ function CardInstrutor({ instrutor, variant }: CardInstrutorProps) {
         <div className="mt-8 flex items-center gap-4">
             <div className="bg-gray-50 rounded px-4 py-3 flex-1 flex flex-col gap-1 border border-gray-100">
                 <span className="text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Especialidade</span>
-                <span className="text-[13px] font-semibold text-gray-900">
+                <span className="text-[13px] font-semibold text-brand-neutral">
                   {especialidade}
                 </span>
             </div>
             <div className="bg-gray-50 rounded px-4 py-3 flex-1 flex flex-col gap-1 border border-gray-100">
                 <span className="text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Tipo de Veículo</span>
-                <span className="text-[13px] font-semibold text-gray-900">
+                <span className="text-[13px] font-semibold text-brand-neutral">
                   Carro Passeio
                 </span>
             </div>
             <div className="bg-gray-50 rounded px-4 py-3 flex-1 flex flex-col gap-1 border border-gray-100">
                 <span className="text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Habilitação</span>
-                <span className="text-[13px] font-semibold text-gray-900">
+                <span className="text-[13px] font-semibold text-brand-neutral">
                   Categoria B
                 </span>
             </div>
@@ -95,7 +95,7 @@ function CardInstrutor({ instrutor, variant }: CardInstrutorProps) {
         <div className="mt-8 pt-6 border-t border-gray-100 flex items-center justify-between">
            <div className="flex gap-10">
                <div>
-                  <p className="text-[15px] font-bold text-gray-900 flex items-center gap-1">
+                  <p className="text-[15px] font-bold text-brand-neutral flex items-center gap-1">
                       100%
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-3 h-3 text-gray-400">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
@@ -104,7 +104,7 @@ function CardInstrutor({ instrutor, variant }: CardInstrutorProps) {
                   <p className="text-xs text-gray-500 mt-1 font-medium">Aprovação</p>
                </div>
                <div>
-                  <p className="text-[15px] font-bold text-gray-900 flex items-center gap-1">
+                  <p className="text-[15px] font-bold text-brand-neutral flex items-center gap-1">
                       +500
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-3 h-3 text-gray-400">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
@@ -113,7 +113,7 @@ function CardInstrutor({ instrutor, variant }: CardInstrutorProps) {
                   <p className="text-xs text-gray-500 mt-1 font-medium">Alunos formados</p>
                </div>
                <div>
-                  <p className="text-[15px] font-bold text-gray-900 flex items-center gap-1">
+                  <p className="text-[15px] font-bold text-brand-neutral flex items-center gap-1">
                       5.0
                       <span className="text-yellow-400">★</span>
                   </p>
@@ -122,14 +122,15 @@ function CardInstrutor({ instrutor, variant }: CardInstrutorProps) {
            </div>
 
           <Link
-           to={`/instrutores/${id}`}
+           to={`/agendar/${id}`}
             className="
-              text-sm font-semibold text-gray-900 bg-white border-2 border-gray-900 
-              py-2 px-6 rounded-lg hover:bg-gray-900 hover:text-white transition-colors duration-200
+              text-sm font-bold text-brand-primary bg-white border border-brand-primary/20 
+              py-2.5 px-6 rounded-lg hover:bg-brand-primary hover:border-brand-primary hover:text-white transition-all duration-200
+              shadow-sm hover:shadow active:scale-95 outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2
             "
             aria-label={`Ver detalhes de ${nome}`}
           >
-            Ver Detalhes
+            Agendar
           </Link>
         </div>
       </div>

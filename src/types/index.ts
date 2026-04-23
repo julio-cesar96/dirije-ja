@@ -5,12 +5,12 @@ export interface Instrutor {
     cidade: string;
     especialidade: string;
     preco: number;
-    disponibilidade: boolean;
+    disponivel: boolean;
     foto: string;
 }
 
 export type RascunhoInstrutor = Partial<Instrutor>
-export type InstrutorResumido = Pick<Instrutor, "id" | "nome" | "cidade" | "disponibilidade" | "foto">;
+export type InstrutorResumido = Pick<Instrutor, "id" | "nome" | "cidade" | "disponivel" | "foto">;
 export type InstrutorSemId = Omit<Instrutor, "id">;
 
 // Interface das props dos filtros

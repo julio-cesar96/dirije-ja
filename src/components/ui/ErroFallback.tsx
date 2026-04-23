@@ -15,7 +15,7 @@ function ErroFallback({ error, resetErrorBoundary }: FallbackProps) {
     >
       <p className="text-5xl">😕</p>
 
-      <h2 className="text-xl font-bold text-brand-purple">
+      <h2 className="text-xl font-bold text-brand-primary">
         Algo deu errado
       </h2>
 
@@ -28,10 +28,10 @@ function ErroFallback({ error, resetErrorBoundary }: FallbackProps) {
       <button
         onClick={resetErrorBoundary}
         className="
-          bg-brand-purple text-white font-semibold
+          bg-brand-primary text-white font-semibold
           py-2 px-6 rounded-xl
-          hover:bg-purple-800 transition-colors
-          focus:outline-none focus:ring-2 focus:ring-brand-yellow focus:ring-offset-2
+          hover:bg-brand-primary-hover transition-colors
+          focus:outline-none focus:ring-2 focus:ring-brand-secondary focus:ring-offset-2
         "
       >
         Tentar novamente

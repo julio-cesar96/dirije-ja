@@ -11,7 +11,7 @@ export const instrutores: Instrutor[] = [
     nome: 'Ana Carvalho',
     cidade: 'São Paulo',
     especialidade: 'Direção defensiva',
-    disponibilidade: true,
+    disponivel: true,
     preco: 120,
     foto: 'https://i.pravatar.cc/150?img=1',
   },
@@ -21,7 +21,7 @@ export const instrutores: Instrutor[] = [
     cidade: 'Rio de Janeiro',
     especialidade: 'Primeira habilitação',
     preco: 90,
-    disponibilidade: false,
+    disponivel: false,
     foto: 'https://i.pravatar.cc/150?img=3',
   },
   {
@@ -30,7 +30,7 @@ export const instrutores: Instrutor[] = [
     cidade: 'Belo Horizonte',
     especialidade: 'Reciclagem CNH',
     preco: 100,
-    disponibilidade: true,
+    disponivel: true,
     foto: 'https://i.pravatar.cc/150?img=5',
   },
   {
@@ -39,7 +39,7 @@ export const instrutores: Instrutor[] = [
     cidade: 'São Paulo',
     especialidade: 'Direção defensiva',
     preco: 150,
-    disponibilidade: true,
+    disponivel: true,
     foto: 'https://i.pravatar.cc/150?img=7',
   },
   {
@@ -48,7 +48,7 @@ export const instrutores: Instrutor[] = [
     cidade: 'Curitiba',
     especialidade: 'Primeira habilitação',
     preco: 80,
-    disponibilidade: false,
+    disponivel: false,
     foto: 'https://i.pravatar.cc/150?img=9',
   },
   {
@@ -57,7 +57,7 @@ export const instrutores: Instrutor[] = [
     cidade: 'Curitiba',
     especialidade: 'Direção defensiva',
     preco: 75,
-    disponibilidade: true,
+    disponivel: true,
     foto: 'https://i.pravatar.cc/150?img=9',
   },
   {
@@ -66,7 +66,7 @@ export const instrutores: Instrutor[] = [
     cidade: 'Bahia',
     especialidade: 'Treinamento para habilitados',
     preco: 90,
-    disponibilidade: true,
+    disponivel: true,
     foto: 'https://i.pravatar.cc/150?img=9',
   },
   {
@@ -75,7 +75,7 @@ export const instrutores: Instrutor[] = [
     cidade: 'Manaus',
     especialidade: 'Primeira habilitação',
     preco: 80,
-    disponibilidade: true,
+    disponivel: true,
     foto: 'https://i.pravatar.cc/150?img=9',
   },
 ]

@@ -8,7 +8,7 @@ function Error() {
     <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center gap-6 text-center px-4">
       <p className="text-8xl">🚗💨</p>
 
-      <h1 className="text-4xl font-bold text-brand-purple">
+      <h1 className="text-4xl font-bold text-brand-primary">
         Página não encontrada
       </h1>
 
@@ -23,10 +23,10 @@ function Error() {
       <Link
         to="/"
         className="
-          bg-brand-purple text-white font-semibold
+          bg-brand-primary text-white font-semibold
           py-3 px-8 rounded-xl
-          hover:bg-purple-800 transition-colors
-          focus:outline-none focus:ring-2 focus:ring-brand-yellow focus:ring-offset-2
+          hover:bg-brand-primary-hover transition-colors
+          focus:outline-none focus:ring-2 focus:ring-brand-secondary focus:ring-offset-2
         "
       >
         Voltar para a home

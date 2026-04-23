@@ -15,10 +15,48 @@
       "cidade": "São Paulo",
       "especialidade": "Treino para Recém Habilitados",
       "preco": 150,
-      "disponivel": false,
+      "disponivel": true,
+      "foto": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=400"
+    },
+    {
+      "id": "3",
+      "nome": "Fátima Silva",
+      "cidade": "Rio de Janeiro",
+      "especialidade": "Direção Defensiva",
+      "preco": 120,
+      "disponivel": true,
+      "foto": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=400"
+    },
+    {
+      "id": "4",
+      "nome": "Leandro Lima",
+      "cidade": "São Paulo",
+      "especialidade": "Treino para Recém Habilitados",
+      "preco": 150,
+      "disponivel": true,
       "foto": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=400"
     }
   ],
-  "agendamentos": [],
-  "favoritos": []
+  "agendamentos": [
+    {
+      "instrutorId": "1",
+      "nome": "Julio Brito",
+      "telefone": "21974344151",
+      "data": "2026-04-24",
+      "horario": "12:40",
+      "observacoes": "",
+      "id": "J31CMC8JX14"
+    },
+    {
+      "instrutorId": "1",
+      "nome": "Julio Brito da Silva",
+      "telefone": "21974344151",
+      "data": "2026-05-01",
+      "horario": "08:10",
+      "observacoes": "",
+      "id": "UunPliNENUY"
+    }
+  ],
+  "favoritos": [],
+  "$schema": "./node_modules/json-server/schema.json"
 }
