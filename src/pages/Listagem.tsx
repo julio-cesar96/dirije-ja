@@ -1,33 +1,14 @@
-import { useState, useMemo } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { buscarInstrutores } from "../services/api";
-import type { Instrutor } from "../types";
+import { useState } from "react";
 import { BarraFiltros } from "../components/features/BarraFiltro";
 import CardInstrutor from "../components/features/CardInstrutor";
 import Skeleton from "../components/ui/Skeleton";
+import { useInstrutores } from "../hooks/useInstrutores";
 
 function Listagem() {
   const [busca, setBusca] = useState("");
   const [cidade, setCidade] = useState("");
 
-  const {
-    data: instrutores = [], // evitar undefined
-    isLoading,
-    isError,
-    error,
-  } = useQuery<Instrutor[]>({
-    queryKey: ["instrutores"],
-    queryFn: buscarInstrutores,
-    throwOnError: true, // para que o error seja capturado pelo ErrorBoundary
-  });
-
-  const intrutoresFiltrados = useMemo(() => {
-      return instrutores.filter(i => {
-      const buscaOk = busca === ""|| i.nome.toLowerCase().includes(busca.toLowerCase());
-      const cidadeOk = cidade === "" || i.cidade.toLowerCase() === cidade.toLowerCase();
-      return buscaOk && cidadeOk;
-    })
-  }, [busca, cidade, instrutores])
+  const { instrutores, instrutoresFiltrados, isLoading, isError, error } = useInstrutores({ busca, cidade});
 
 
   if (isLoading) {
@@ -92,13 +73,13 @@ function Listagem() {
 
         <div className="mb-6">
             <p className="text-sm font-medium text-gray-600 bg-gray-100 inline-block px-4 py-1.5 rounded-full" aria-live="polite">
-                {intrutoresFiltrados.length} {intrutoresFiltrados.length === 1 ? 'instrutor encontrado' : 'instrutores encontrados'}
+                {instrutoresFiltrados.length} {instrutoresFiltrados.length === 1 ? 'instrutor encontrado' : 'instrutores encontrados'}
             </p>
         </div>
 
-        {intrutoresFiltrados.length > 0 ? (
+        {instrutoresFiltrados.length > 0 ? (
             <div className="flex flex-col gap-6">
-                {intrutoresFiltrados.map(instrutor => (
+                {instrutoresFiltrados.map(instrutor => (
                     <CardInstrutor
                         key={instrutor.id}
                         instrutor={instrutor}

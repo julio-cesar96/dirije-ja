@@ -72,6 +72,10 @@ export async function desfavoritarInstrutor(id: string): Promise<void> {
   return apiFetch(`/favoritos/${id}`, { method: "DELETE" })
 }
 
+export async function buscarFavoritos(): Promise<string[]> {
+  return apiFetch<string[]>("/favoritos")
+}
+
 // Anatomia do React Query:
 // - useQuery: para buscar dados (GET)
 /*

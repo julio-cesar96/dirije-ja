@@ -15,6 +15,7 @@ import { ErrorBoundary } from "react-error-boundary";
      -> Layout renderiza -> Header + <Outlet /> = Header + Perfil do instrutor 123
 */
 
+
 function Layout() {
     return (
         <>

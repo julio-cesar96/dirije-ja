@@ -1,7 +1,66 @@
 import { cva, type VariantProps } from 'class-variance-authority'
 import type { Instrutor } from '../../types'
 import Badge from '../ui/Badges'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
+import { useAuthStore } from '../../stores/authStore';
+import { useState } from 'react';
+import { favoritarInstrutor } from '../../services/api';
+
+/* SOLID */
+
+// S - Single Responsibility Principle: O componente CardInstrutor é responsável apenas por exibir as informações do instrutor e lidar com ações relacionadas a ele, como favoritar e agendar. Ele não lida com lógica de autenticação ou gerenciamento de estado global, o que mantém suas responsabilidades claras e focadas.
+
+/* 
+  CardInstrutor hoje tem QUATRO motivos para mudar:
+
+  Motivo 1: o design do card muda (responsabilidade de UI)
+  Motivo 2: a lógica de favoritar muda (responsabilidade de dados)
+  Motivo 3: a regra de autenticação muda (responsabilidade de auth)
+  Motivo 4: a rota de agendamento muda (responsabilidade de roteamento)
+
+  Um componente com 4 motivos para mudar vai ser modificado 4x mais do que deveria — e cada modificação pode quebrar as outras 3.
+
+*/
+
+
+// O - Open/Closed Principle: O componente é aberto para extensão, mas fechado para modificação. Por exemplo, se quisermos adicionar um novo tipo de badge para indicar instrutores com avaliações excelentes, podemos estender o componente sem modificar seu código existente, mantendo a estabilidade do componente e evitando bugs.
+
+/*
+
+Violação do Open/Closed Principle:
+function CardInstrutor({ tipo }: { tipo: "normal" | "destaque" | "novo-tipo" }) {
+  if (tipo === "normal") return <div>...</div>
+  if (tipo === "destaque") return <div>...</div>
+  if (tipo === "novo-tipo") return <div>...</div>  // ← modifica o componente
+}
+
+O pai compõe sem modificar o componente filho
+<Card>
+  <Card.Header foto={foto} nome={nome} />
+  <Card.Body especialidade={especialidade} preco={preco} />
+  <Card.Actions instrutorId={id} disponivel={disponivel} />
+</Card>
+
+
+*/
+
+// D - Dependy Inversion Principle: O componente depende de abstrações (props e hooks) em vez de detalhes concretos. Ele recebe os dados do instrutor como props e usa hooks para acessar o estado de autenticação e realizar mutações, sem depender diretamente de implementações específicas, o que facilita a manutenção e a testabilidade do componente.
+
+/* 
+ ❌ Componente depende diretamente da implementação (API):
+function CardInstrutor({ instrutor }) {
+  const mutation = useMutation({ mutationFn: favoritarInstrutor }) // ← acoplado
+   Se trocar de API, este componente muda
+}
+
+ ✅ Componente depende de abstração (hook):
+function CardInstrutor({ instrutor }) {
+  const { favoritar, isFavoritado } = useFavoritos(instrutor.id) // ← desacoplado
+   Se trocar de API, só o hook muda — o componente não sabe
+}
+*/
+
 
 const cardVariants = cva(
   [
@@ -12,9 +71,10 @@ const cardVariants = cva(
   {
     variants: {
       variant: {
-        padrao:     "",
-        disponivel: "",
+        padrao:     "border-gray-200",
+        disponivel: "border-green-500 bg-green-100",
         destaque:   "border-gray-300",
+        erro:     "border-red-500 bg-red-50",
       },
     },
     defaultVariants: { variant: "padrao" },
@@ -27,9 +87,40 @@ interface CardInstrutorProps extends VariantProps<typeof cardVariants> {
 }
 
 function CardInstrutor({ instrutor, variant }: CardInstrutorProps) {
+
+  const navigate = useNavigate()
+  const queryClient = useQueryClient()
+
   const { id, nome, cidade, especialidade, preco, disponivel, foto } = instrutor
+  
+
+  // 1. busca estado de autenticação para verificar se usuário pode favoritar ou agendar
+  const usuario = useAuthStore(state => state.usuario)
+  // 2. estado local para controlar se o instrutor está favoritado ou não (pode ser melhorado para refletir estado real do backend)
+  const [favoritado, setFavoritado] = useState(false)
+
+  // 3. função de mutação para favoritar/desfavoritar o instrutor, com invalidation da query para atualizar a lista de instrutores
+  const mutation = useMutation({
+    mutationFn: favoritarInstrutor,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["instrutores"] })
+      setFavoritado(prev => !prev)
+    },
+  })
+
+  // 4. formatação do preço para exibição
+  const precoFormatado = `R$ ${instrutor.preco.toFixed(2)}`
+
+  // 5. função para lidar com clique no botão de agendamento, redirecionando para a página de agendamento ou login se não autenticado
+  function handleAgendar() {
+    if (!usuario) { navigate("/login"); return }
+    navigate(`/agendar/${instrutor.id}`)
+  }
+
+  // 6. definição do variant final do card com base na disponibilidade e no prop recebido
   const variantFinal = variant ?? (disponivel ? "disponivel" : "padrao")
 
+  // 7. renderização do card com informações do instrutor, botões de ação e indicadores de status
   return (
     <article className={cardVariants({ variant: variantFinal })}>
       {/* Imagem do Instrutor */}
@@ -139,3 +230,9 @@ function CardInstrutor({ instrutor, variant }: CardInstrutorProps) {
 }
 
 export default CardInstrutor
+
+// function somar(a, b) {
+    //  return a + b
+    // cadastroUsuario()
+    // enviarEmail()
+// }

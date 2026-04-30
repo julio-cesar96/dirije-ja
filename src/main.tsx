@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import App from './App.tsx'
 import { BrowserRouter } from 'react-router-dom'
+import { ThemeProvider } from './contexts/theme/ThemeContext.tsx'
 
 /* 
   QueryClient é o objeto central do React Query, responsável por gerenciar o cache, as queries e as mutações.
@@ -34,10 +35,12 @@ const queryClient = new QueryClient({
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-         <App />
-      </BrowserRouter>
-      <ReactQueryDevtools initialIsOpen={false} />
+      <ThemeProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </ThemeProvider>
+    <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
     {/*
       BrowserRouter deve envolver TODA a aplicação.

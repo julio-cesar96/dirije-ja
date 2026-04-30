@@ -45,4 +45,8 @@ export interface CardInstrutorProps {
 export type StatusFiltro = "todos" | "disponiveis" | "indisponiveis";
 
 
-
+export interface Usuario {
+    id: string | number;
+    nome: string;
+    email: string;
+}

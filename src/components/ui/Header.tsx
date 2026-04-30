@@ -1,9 +1,45 @@
 // Recebe o total de instrutores disponíveis e exibe no header
 import { NavLink } from "react-router-dom"
+import { useTheme } from "../../contexts/theme/ThemeContext";
+import { useAuthStore } from "../../stores/authStore";
 
 export const Header = ({ totalDisponiveis }: { totalDisponiveis: number }) => {
+
+    const usuario = useAuthStore((state) => state.usuario);
+    const logout = useAuthStore((state) => state.logout);
+
+    const { theme, toggleTheme } = useTheme();
     return (
         <header className="bg-white border-b border-gray-200 sticky top-0 z-10 w-full">
+            <button
+                onClick={toggleTheme}
+                className="absolute top-4 right-4 w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-gray-600 hover:bg-brand-tertiary hover:text-brand-primary hover:border-brand-tertiary transition cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
+                aria-label="Alternar tema claro/escuro"
+            >
+                {theme === 'light' ? (
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18v2.25m-6.364-.386l1.591-1.591M3 12H5.25m.386-6.364L6.927 5.636M16.364 16.364l1.591 1.591M7.758 7.758L5.636 5.636" />
+                    </svg>
+                ) : (
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11c0 5.385 4.365 9.75 9.75 9.75a9.753 9.753 0 006.002-2.748z" />
+                    </svg>
+                )}
+            </button>
+            {usuario && (
+                <div className="absolute top-4 left-4 flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-brand-primary text-white flex items-center justify-center font-bold text-sm shadow-sm">
+                        {usuario.nome.charAt(0).toUpperCase()}
+                    </div>
+                    <span className="text-sm font-medium text-gray-600">{usuario.nome}</span>
+                    <button
+                        onClick={logout}
+                        className="text-sm font-medium text-gray-400 hover:text-red-500 transition-colors duration-200"
+                    >
+                        Sair
+                    </button>
+                </div>
+            )}
             <div className="max-w-6xl mx-auto flex items-center justify-between px-4 py-4">
                 <div className="flex items-center gap-8">
                     <NavLink

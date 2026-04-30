@@ -4,9 +4,21 @@ import { buscarInstrutor } from "../services/api";
 import Badge from "../components/ui/Badges";
 import Breadcrumb from "../components/ui/Breadcrumb";
 import type { Instrutor } from "../types";
+import { useAuthStore } from "../stores/authStore";
+import { useEffect } from "react";
 
 function Perfil() {
+  const usuario = useAuthStore((state) => state.usuario);
   const { id } = useParams<{id: string;}>();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!usuario) {
+      // Se o usuário não estiver logado, redireciona para a página de login
+      // eslint-disable-next-line react-hooks/immutability
+      navigate("/", { replace: true });
+    }
+  },[usuario, navigate]);
 
   const {
     data: instrutor,
@@ -19,9 +31,26 @@ function Perfil() {
     retry: false, // não tenta refazer a query em caso de erro (ex: ID inválido)
   });
 
-
-  const navigate = useNavigate();
-
+  if (!usuario) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[50vh] gap-4">
+        <p className="text-6xl">🚫</p>
+        <h1 className="text-2xl font-bold text-gray-600">Acesso negado</h1>
+        <p className="text-gray-500">Faça login para acessar o perfil do instrutor.</p>
+        <Link
+          to="/"
+          className="
+            bg-brand-primary text-white font-semibold
+            py-2 px-6 rounded-xl
+            hover:bg-brand-primary-hover transition-colors
+            focus:outline-none focus:ring-2 focus:ring-brand-secondary focus:ring-offset-2
+          "
+        >
+          Voltar para a listagem
+        </Link>
+      </div>
+    );
+  }
 
   if (isLoading) {
     return (
