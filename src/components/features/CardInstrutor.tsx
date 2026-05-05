@@ -1,11 +1,8 @@
 import { cva, type VariantProps } from 'class-variance-authority'
 import type { Instrutor } from '../../types'
 import Badge from '../ui/Badges'
-import { Link, useNavigate } from 'react-router-dom';
-import { useQueryClient } from '@tanstack/react-query';
-import { useAuthStore } from '../../stores/authStore';
-import { useState } from 'react';
-import { favoritarInstrutor } from '../../services/api';
+import { Link } from 'react-router-dom'
+import { useFavoritos } from '../../hooks/useFavoritos'
 
 /* SOLID */
 
@@ -87,40 +84,23 @@ interface CardInstrutorProps extends VariantProps<typeof cardVariants> {
 }
 
 function CardInstrutor({ instrutor, variant }: CardInstrutorProps) {
-
-  const navigate = useNavigate()
-  const queryClient = useQueryClient()
-
   const { id, nome, cidade, especialidade, preco, disponivel, foto } = instrutor
+
+  const instrutorId = String(id)
+  const { isFavoritado, favoritar, desfavoritar } = useFavoritos(instrutorId)
   
 
-  // 1. busca estado de autenticação para verificar se usuário pode favoritar ou agendar
-  const usuario = useAuthStore(state => state.usuario)
-  // 2. estado local para controlar se o instrutor está favoritado ou não (pode ser melhorado para refletir estado real do backend)
-  const [favoritado, setFavoritado] = useState(false)
+  function handleFavorito() {
+    if (isFavoritado) {
+      desfavoritar?.()
+      return
+    }
 
-  // 3. função de mutação para favoritar/desfavoritar o instrutor, com invalidation da query para atualizar a lista de instrutores
-  const mutation = useMutation({
-    mutationFn: favoritarInstrutor,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["instrutores"] })
-      setFavoritado(prev => !prev)
-    },
-  })
-
-  // 4. formatação do preço para exibição
-  const precoFormatado = `R$ ${instrutor.preco.toFixed(2)}`
-
-  // 5. função para lidar com clique no botão de agendamento, redirecionando para a página de agendamento ou login se não autenticado
-  function handleAgendar() {
-    if (!usuario) { navigate("/login"); return }
-    navigate(`/agendar/${instrutor.id}`)
+    favoritar()
   }
 
-  // 6. definição do variant final do card com base na disponibilidade e no prop recebido
   const variantFinal = variant ?? (disponivel ? "disponivel" : "padrao")
 
-  // 7. renderização do card com informações do instrutor, botões de ação e indicadores de status
   return (
     <article className={cardVariants({ variant: variantFinal })}>
       {/* Imagem do Instrutor */}
@@ -131,8 +111,10 @@ function CardInstrutor({ instrutor, variant }: CardInstrutorProps) {
           className="w-full h-full object-cover"
         />
         <button 
+          onClick={handleFavorito}
           className="absolute top-3 right-3 bg-brand-primary/40 hover:bg-brand-primary/60 p-2 rounded-full text-white transition-colors"
-          aria-label="Favoritar"
+          aria-label={isFavoritado ? "Desfavoritar" : "Favoritar"}
+          aria-pressed={isFavoritado}
         >
           <svg xmlns="http://www.w3.org/Infinity" fill="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
             <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
@@ -213,7 +195,7 @@ function CardInstrutor({ instrutor, variant }: CardInstrutorProps) {
            </div>
 
           <Link
-           to={`/agendar/${id}`}
+           to={`/agendar/${instrutorId}`}
             className="
               text-sm font-bold text-brand-primary bg-white border border-brand-primary/20 
               py-2.5 px-6 rounded-lg hover:bg-brand-primary hover:border-brand-primary hover:text-white transition-all duration-200

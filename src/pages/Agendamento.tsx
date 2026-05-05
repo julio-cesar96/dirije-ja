@@ -1,66 +1,34 @@
 import { useParams, useNavigate, Link } from "react-router-dom"
-import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query'
-import { criarAgendamento, buscarInstrutor } from '../services/api'
-import type { Instrutor } from "../types"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { agendamentoSchema, type AgendamentoSchema } from "../schemas/agendamento.schema" 
 import Breadcrumb from "../components/ui/Breadcrumb"
+import { useAgendamento } from "../hooks/useAgendamento"
+import { useInstrutor } from "../hooks/useInstrutores"
 
 
 function Agendamento() {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
-  const queryClient = useQueryClient();
+  
+  const { agendar, isPending, isError, isSuccess, error } = useAgendamento({
+    onError: (error) => console.error(`Erro ao criar agendamento: ${error.message}`)
+  });
 
   // -- Form State - React Hook Form -- //
   const {
     register, // register é usado para conectar os campos do formulário ao React Hook Form,
-    handleSubmit, // handleSubmit é uma função que envolve a função de envio do formulário, cuidando da validação e coleta dos dados,
-    formState: { errors, isSubmitting }, // formState contém informações sobre o estado do formulário, como erros de validação e se o formulário está sendo submetido.
+    handleSubmit, // formState contém informações sobre o estado do formulário, como erros de validação e se o formulário está sendo submetido.
   } = useForm<AgendamentoSchema>({
-    resolver: zodResolver(agendamentoSchema), // zodResolver integra o esquema de validação do Zod com o React Hook Form, permitindo que as regras de validação sejam aplicadas automaticamente.
-    defaultValues: {
-      nome: "",
-      telefone: "",
-      data: "",
-      horario: "",
-      observacoes: "",
-    },
-    mode: "onSubmit", // A validação ocorre apenas quando o formulário é submetido, evitando validações em tempo real enquanto o usuário preenche os campos.
+    resolver: zodResolver(agendamentoSchema), // zodResolver integra o esquema de validação do Zod com o React Hook Form, permitindo que as regras de validação sejam aplicadas automaticamente..
   });
 
   // -- SERVER/HTTP State: Busca o instrutor para exibir o nome no formulário -- //
-  const { data: instrutor } = useQuery<Instrutor>({
-    queryKey: ["instrutor", id],
-    queryFn: () => buscarInstrutor(id!),
-    enabled: !!id,
-  })
-
-  // -- SERVER/HTTP State: envia os dados -- //
-  const mutation = useMutation({
-    mutationFn: criarAgendamento,
-    onSuccess: () => {
-      /*
-        invalidateQueries marca a query de agendamentos como stale.
-        Na próxima vez que PaginaMeuPerfil montar, vai rebuscar.
-        Não precisa recarregar a página — o cache cuida disso.
-      */
-      // invalida agendamentos para atualizar a lista no perfil do instrutor
-      queryClient.invalidateQueries({ queryKey: ["agendamentos"] })
-      // invalida o instrutor - disponibilidade pode ter mudado
-      queryClient.invalidateQueries({ queryKey: ["instrutor", id] });
-      
-      // Removido o navigate imediato para exibir a tela de sucesso ("UX Modal Feedback")
-    },
-
-    onError: (error: Error) => {
-      console.error(`Erro ao criar agendamento: ${error.message}`)
-    }
-  });
+  const { data: instrutor } = useInstrutor(id)
+ 
 
   function onSubmit(data: AgendamentoSchema) {
-    mutation.mutate({ instrutorId: id!, ...data });
+   agendar({ instrutorId: id!, ...data });
   }
   
 
@@ -86,7 +54,7 @@ function Agendamento() {
           />
       </div>
 
-      {mutation.isSuccess ? (
+      {isSuccess ? (
         <div className="bg-white rounded-2xl p-10 shadow-2xl border border-gray-100 max-w-sm w-full text-center space-y-6 animate-in fade-in zoom-in duration-300">
            <div className="w-24 h-24 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto shadow-inner">
              <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -118,7 +86,7 @@ function Agendamento() {
             className="bg-white rounded-2xl p-8 shadow-xl border border-gray-100 flex flex-col gap-5 relative overflow-hidden"
           >
             {/* Modal-like backdrop if submitting */}
-            {mutation.isPending && (
+            {isPending && (
               <div className="absolute inset-0 bg-white/70 backdrop-blur-sm z-10 flex flex-col items-center justify-center">
                  <div className="w-12 h-12 border-4 border-brand-primary border-t-transparent rounded-full animate-spin"></div>
                  <p className="mt-4 font-medium text-brand-primary animate-pulse">Agendando...</p>
@@ -126,7 +94,7 @@ function Agendamento() {
             )}
 
             {/* Error Message */}
-            {mutation.isError && (
+            {isError && (
               <div className="bg-red-50 text-red-600 p-4 rounded-lg flex items-start gap-3">
                  <svg className="w-6 h-6 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                  <div>
@@ -140,14 +108,14 @@ function Agendamento() {
             <Input
               label="Seu nome"
               htmlFor="nome"
-              erro={errors.nome?.message}
+              erro={error?.message}
             >
               <input
                 id="nome"
                 type="text"
                 autoComplete="name"
                 {...register("nome")}
-                className={inputClasses(!!errors.nome)}
+                className={inputClasses(!!error?.message)}
               />
             </Input>
 
@@ -155,7 +123,7 @@ function Agendamento() {
             <Input
               label="Telefone"
               htmlFor="telefone"
-              erro={errors.telefone?.message}
+              erro={error?.message}
             >
               <input
                 id="telefone"
@@ -163,27 +131,27 @@ function Agendamento() {
                 autoComplete="tel"
                 placeholder="(11) 99999-9999"
                 {...register("telefone")}
-                className={inputClasses(!!errors.telefone)}
+                className={inputClasses(!!error?.message)}
               />
             </Input>
 
             {/* Campos lado a lado: data + horário */}
             <div className="grid grid-cols-2 gap-4">
-              <Input label="Data" htmlFor="data" erro={errors.data?.message}>
+              <Input label="Data" htmlFor="data" erro={error?.message}>
                 <input
                   id="data"
                   type="date"
                   min={amanha()}
                   {...register("data")}
-                  className={inputClasses(!!errors.data)}
+                  className={inputClasses(!!error?.message)}
                 />
               </Input>
-              <Input label="Horário" htmlFor="horario" erro={errors.horario?.message}>
+              <Input label="Horário" htmlFor="horario" erro={error?.message}>
                 <input
                   id="horario"
                   type="time"
                   {...register("horario")}
-                  className={inputClasses(!!errors.horario)}
+                  className={inputClasses(!!error?.message)}
                 />
               </Input>
             </div>
@@ -192,20 +160,20 @@ function Agendamento() {
             <Input    
               label="Observações (opcional)"
               htmlFor="observacoes"
-              erro={errors.observacoes?.message}
+              erro={error?.message}
             >
               <textarea
                 id="observacoes"
                 rows={3}
                 {...register("observacoes")}
-                className={inputClasses(!!errors.observacoes)}
+                className={inputClasses(!!error?.message)}
               />
             </Input>
 
             <div className="flex flex-col sm:flex-row gap-4 pt-4 mt-4 border-t border-gray-100">
               <button
                 type="submit"
-                disabled={isSubmitting || mutation.isPending}
+                disabled={isPending}
                 className="
                   flex-1 bg-brand-primary text-white font-semibold flex justify-center items-center gap-2
                   py-3.5 px-6 rounded-xl hover:bg-brand-primary-hover hover:shadow-md transition-all duration-200
@@ -213,7 +181,7 @@ function Agendamento() {
                   focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2
                 "
               >
-                {mutation.isPending ? (
+                {isPending ? (
                   <span className="flex items-center gap-2">
                      Enviando...
                   </span>
@@ -222,7 +190,7 @@ function Agendamento() {
               <button
                 type="button"
                 onClick={() => navigate(-1)}
-                disabled={mutation.isPending}
+                disabled={isPending}
                 className="
                   flex-1 border-2 border-gray-200 bg-white text-gray-500 font-semibold
                   py-3.5 px-6 rounded-xl hover:border-gray-300 hover:text-brand-neutral hover:bg-gray-50
